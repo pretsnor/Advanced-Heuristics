@@ -12,17 +12,19 @@ Eiwitten zijn moleculaire machientjes die vrijwel alle processen in jouw cellen 
 
 Opdracht:
 
-a) Schrijf een algoritme dat eiwitten x, y, en z kan vouwen naar de meest stabiele conformatie in 2 dimensies.
-
-(x, y en z lopen op in lengte?)
-
-b) Zorg ervoor dat je algoritme van a. de eiwitten altijd naar dezelfde meest stabiele conformatie vouwt (als er meerdere mogelijk zijn)
+a) Schrijf een algoritme dat eiwitten 1, 2, 3 en 4 kan vouwen naar een stabiele conformatie in 2 dimensies
+	eiwit 1: l = 10, aa = 2
+	eiwit 2: l = 25, aa = 2
+	eiwit 3: l = 10, aa = 3
+	eiwit 4: l = 50, aa = 3
 
 Advanced: 
 
-c) Voeg een dimensie toe (3D) en probeer eiwitten x, y, en z nogmaals te vouwen naar de meest stabiele conformatie.
+b) Voeg een dimensie toe (3D) en probeer eiwitten 1, 2, 3, en 4 nogmaals te vouwen naar de meest stabiele conformatie.
 
-d) Vouw nu eiwitten p, q, en r. Deze eiwitten bevatten meer soorten aminozuren met verschillende bindingssterktes (zie aminomatrix)
+d) Vouw nu eiwitten 5 en 6 in 3d, die meer aminozuren bevatten (zie aminomatrix voor interactie sterktes)
+	eiwit 5: l = 25, aa = 4
+	eiwit 2: l = 25, aa = 5
 
 Very advanced:
 
