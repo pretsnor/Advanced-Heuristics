@@ -1,0 +1,29 @@
+ADVANCED HEURISTICS
+JAN 2017
+
+Anneliek ter Horst & Misha Paauw
+
+CASE: EIWITTEN VOUWEN
+
+
+Inleiding: 
+
+Eiwitten zijn moleculaire machientjes die vrijwel alle processen in jouw cellen uitvoeren en reguleren. Eiwitten moeten een specifieke 3D structuur hebben om deze taken goed uit te voeren, en deze structuur wordt bepaald door de 1D volgorde van aminozuren in het eiwit. Elk zelfde eiwit (dat wil zeggen: dezelfde volgorde van aminozuren) vouwt zich altijd hetzelfde. Deze vouwing wordt bewerkstelligd door eigenschappen van de aminozuren: sommigen zijn in staat sterke bindingen met elkaar te vormen, terwijl anderen juist graag aan de buitenkant van het eiwit zitten omdat ze daar met de waterige omgeving kunnen interacteren. 
+
+Opdracht:
+
+a) Schrijf een algoritme dat eiwitten x, y, en z kan vouwen naar de meest stabiele conformatie in 2 dimensies.
+
+(x, y en z lopen op in lengte?)
+
+b) Zorg ervoor dat je algoritme van a. de eiwitten altijd naar dezelfde meest stabiele conformatie vouwt (als er meerdere mogelijk zijn)
+
+Advanced: 
+
+c) Voeg een dimensie toe (3D) en probeer eiwitten x, y, en z nogmaals te vouwen naar de meest stabiele conformatie.
+
+d) Vouw nu eiwitten p, q, en r. Deze eiwitten bevatten meer soorten aminozuren met verschillende bindingssterktes (zie aminomatrix)
+
+Very advanced:
+
+e) Probeer te bepalen welke eigenschappen van eiwitten ervoor zorgen dat ze moeilijk te vouwen zijn.
