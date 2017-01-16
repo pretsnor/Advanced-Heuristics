@@ -1,10 +1,9 @@
 # import
-
 from Amino_acid import *
+from Bond import *
 from pprint import pprint
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
-
 
 class Protein(object):
 	"""
@@ -28,7 +27,35 @@ class Protein(object):
 			self.x.append(locations[i][0])
 			self.y.append(locations[i][1])
 			self.z.append(locations[i][2])
-	
+
+		self.total_bonds = []
+		self.covalent_bonds = []
+		self.other_bonds = []
+
+		# generate list (of tuples (of tuples)) containing all covalent bonds
+		for i in range(self.length - 1):
+			self.covalent_bonds.append(Bond(self.seq[i], self.seq[i + 1]))
+
+
+	def find_neighbours(self): 
+		"""
+		Finds neighbouring amino acid couples in the protein.
+		"""	
+		counter = 0
+
+		# find all possible bonds
+		for i in range(self.length):
+			for j in range(i, self.length):
+				if (abs(sum(self.seq[i].location) - sum(self.seq[j].location)) == 1):
+					self.total_bonds.append(Bond(self.seq[i], self.seq[j]))
+
+		# subtract covalent bonds
+		self.other_bonds = [x for x in self.total_bonds if x not in self.covalent_bonds]
+
+	# def calculate_stability(self):
+		"""
+		Calculates the stability of the protein in the current folding, based on neighbour interactions of amino acids
+		"""
 
 	def __iter__(self):
 		"""
@@ -68,11 +95,16 @@ class Protein(object):
 		ax.set_ylabel('Y Label')
 		ax.set_zlabel('Z Label')
 
-		# plot
+		# plot amino acids
 		ax.scatter(x, y, z, marker='o', color = colors)
-		ax.plot_wireframe(x, y, z, linestyle=":", color="#ff0000")
+		# plot covalent bonds
+		ax.plot_wireframe(x, y, z, linestyle="-", color="#ff0000")
+		
+		# plot other bonds
+		
+		# HOE? ax.plot_wireframe(i., y, z, linestyle=":", color="#000000")
 
 		plt.show()
  	
 		
-	# def calculate_stability(self):
+	
