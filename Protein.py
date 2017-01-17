@@ -41,25 +41,31 @@ class Protein(object):
 		"""
 		Finds neighbouring amino acid couples in the protein.
 		"""	
-		counter = 0
 
 		# find all possible bonds
 		for i in range(self.length):
 			for j in range(i, self.length):
-				if (abs(sum(self.seq[i].location) - sum(self.seq[j].location)) == 1):
+				dx = abs(self.seq[i].location[0] - self.seq[j].location[0])
+				dy = abs(self.seq[i].location[1] - self.seq[j].location[1])
+				dz = abs(self.seq[i].location[2] - self.seq[j].location[2])
+		
+				if ((dx + dy + dz) == 1):
 					self.total_bonds.append(Bond(self.seq[i], self.seq[j]))
 
 		# subtract covalent bonds
 		self.other_bonds = [x for x in self.total_bonds if x not in self.covalent_bonds]
 
-	# def calculate_stability(self):
+	def calculate_stability(self):
 		"""
 		Calculates the stability of the protein in the current folding, based on neighbour interactions of amino acids
 		"""
+		for i in range(len(self.other_bonds)):
+			self.other_bonds[i].determine_value()
+			print self.other_bonds[i].value
 
 	def __iter__(self):
 		"""
-			make protein object itarable
+		make protein object itarable
 		"""
 		return iter(self.seq)
 
@@ -91,9 +97,9 @@ class Protein(object):
 		ax.set_zlim(0,10)
 
 		# axis labels
-		ax.set_xlabel('X Label')
-		ax.set_ylabel('Y Label')
-		ax.set_zlabel('Z Label')
+		ax.set_xlabel('X')
+		ax.set_ylabel('Y')
+		ax.set_zlabel('Z')
 
 		# plot amino acids
 		ax.scatter(x, y, z, marker='o', color = colors)
@@ -101,8 +107,12 @@ class Protein(object):
 		ax.plot_wireframe(x, y, z, linestyle="-", color="#ff0000")
 		
 		# plot other bonds
-		
-		# HOE? ax.plot_wireframe(i., y, z, linestyle=":", color="#000000")
+		for i in range(len(self.other_bonds)):
+			x = [self.other_bonds[i].bond[0][0], self.other_bonds[i].bond[1][0]]
+			y = [self.other_bonds[i].bond[0][1], self.other_bonds[i].bond[1][1]]
+			z = [self.other_bonds[i].bond[0][2], self.other_bonds[i].bond[1][2]]
+
+			ax.plot_wireframe(x, y, z, linestyle=":", color="#000000")
 
 		plt.show()
  	
