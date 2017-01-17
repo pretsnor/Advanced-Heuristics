@@ -13,6 +13,7 @@ class Protein(object):
 	def __init__(self, sequence, locations):
 		self.seq = []
 		self.length = len(sequence)
+		self.stability = 0
 
 		self.x = []
 		self.y = []
@@ -61,7 +62,9 @@ class Protein(object):
 		"""
 		for i in range(len(self.other_bonds)):
 			self.other_bonds[i].determine_value()
-			print self.other_bonds[i].value
+			self.stability = self.stability + self.other_bonds[i].value
+
+		print "stability of this fold: ", self.stability
 
 	def __iter__(self):
 		"""
@@ -113,6 +116,9 @@ class Protein(object):
 			z = [self.other_bonds[i].bond[0][2], self.other_bonds[i].bond[1][2]]
 
 			ax.plot_wireframe(x, y, z, linestyle=":", color="#000000")
+
+		fig.suptitle('protein stability = %s'%(self.stability) , fontsize=14, fontweight='bold')
+
 
 		plt.show()
  	

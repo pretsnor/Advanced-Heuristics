@@ -6,7 +6,7 @@ def initialize():
 	Generates a pseudorandom self avoiding walk of the input sequence
 	"""
 
-	sequence = ["H", "P", "H", "H", "P","H", "P", "H", "H", "P", "H", ]
+	sequence = ["H", "P", "H", "H", "P","H", "P", "H", "H", "P", "H"]
 	locations = [(5,5,5)]
 
 	for i in range(len(sequence)):
