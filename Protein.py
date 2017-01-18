@@ -14,6 +14,8 @@ class Protein(object):
 		self.seq = []
 		self.length = len(sequence)
 		self.stability = 0
+		self.locations = locations
+		
 
 		self.x = []
 		self.y = []
@@ -66,9 +68,47 @@ class Protein(object):
 
 		print "stability of this fold: ", self.stability
 
+	def find_empty(self,location):
+		"""
+		Checks if there are empty spots around a location
+		"""
+		options = [(location[0] + 1, location[1], location[2]),
+				   (location[0] - 1, location[1], location[2]),
+				   (location[0], location[1] + 1, location[2]),
+				   (location[0], location[1] - 1, location[2]),
+				   (location[0], location[1], location[2] + 1),
+				   (location[0], location[1], location[2] - 1)]
+
+		# check if option is occupied by another amino acid
+		empty_spots = [x for x in options if x not in self.locations]
+
+		return empty_spots
+
+	def pull_move(self, q):
+		"""
+		Performs a pull move on amino acid q
+		"""
+		pull_acid = self.seq[q]
+		pull_location = pull_acid.location
+
+		print "we want to pull from here: ",  pull_location
+
+		# finds empty spot around q + 1 
+		empty_spots = self.find_empty(self.seq[q + 1].location)
+
+		# check if there are empty spots
+		if len(empty_spots) == 0:
+			print "oeps geen empty spots"
+			return 0
+
+		# move amino acid q to an empty spot: ALSO UPDATE EVERYTHING?? --> MAKE A NEW PROTEIN! With new location list based on the pull move.
+		# self.seq[q].location = empty_spots[0]
+
+		
+
 	def __iter__(self):
 		"""
-		make protein object itarable
+		make protein object iterable
 		"""
 		return iter(self.seq)
 
