@@ -1,6 +1,7 @@
 import random
 from Protein import *
 from child_protein import *
+from heapq import *
 
 def initialize():
 	"""
@@ -64,11 +65,19 @@ def df(sequence, start_position):
 			if protein.length < len(sequence):
 				stack.append(protein)
 			else:
+				protein.find_neighbours()
+				protein.calculate_stability()
+				print "protein stab", protein.stability
 				counter += 1
 				print "protein number: ", counter
-				
-				finished.append(protein)
-				
+				# TO DO optimize: keep track of best one so far
+				heappush(finished,((protein.stability * -1),protein))
+	
+	# get best fold from prio queue
+	best = heappop(finished)[1]
+	best.visualize()	
+
+
 
 
 
