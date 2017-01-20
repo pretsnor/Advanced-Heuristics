@@ -68,7 +68,7 @@ class Protein(object):
 
 		print "stability of this fold: ", self.stability
 
-	def find_empty(self,location):
+	def find_empty(self, location):
 		"""
 		Checks if there are empty spots around a location
 		"""
