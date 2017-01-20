@@ -46,7 +46,7 @@ def df(sequence, start_position):
 	protein = Protein(sequence[0], start_position)
 	stack.append(protein)
 
-	for i in range(len(sequence) - 1):
+	while len(stack) > 0:
 		# pop parent from stack
 		parent = stack.pop()
 		parent_counter += 1
@@ -57,17 +57,16 @@ def df(sequence, start_position):
 		# generate childs with new amino acid on every possible spot
 		for j in range(len(empty_spots)):
 			protein = Protein_child(parent)
-			amino = Amino_acid(i + 1, sequence[i + 1], empty_spots[j])
+			amino = Amino_acid(parent.length, sequence[parent.length], empty_spots[j])
 			protein.add_amino(amino)
 			
-			# count
-			counter += 1
-
 			# put new proteins on stack or in finished queue
 			if protein.length < len(sequence):
 				stack.append(protein)
 			else:
-				print "protein finished"
+				counter += 1
+				print "protein number: ", counter
+				
 				finished.append(protein)
 				
 
