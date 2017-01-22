@@ -42,6 +42,7 @@ def df(sequence, start_position):
 	finished = []
 	counter = 0	
 	parent_counter = 0
+	best = 0
 
 	# start by generating 1 amino acid protein on the stack
 	protein = Protein(sequence[0], start_position)
@@ -71,7 +72,8 @@ def df(sequence, start_position):
 				counter += 1
 				print "protein number: ", counter
 				# TO DO optimize: keep track of best one so far
-				heappush(finished,((protein.stability * -1),protein))
+				if protein.stability > best:
+					heappush(finished,((protein.stability * -1),protein))
 	
 	# get best fold from prio queue
 	best = heappop(finished)[1]
