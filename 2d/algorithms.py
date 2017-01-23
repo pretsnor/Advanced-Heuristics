@@ -80,11 +80,10 @@ def df(sequence, start_position):
 	best = heappop(finished)[1]
 	best.visualize()	
 
-def wave_search(sequence, start_position):
+<<<<<<< HEAD
+def df_pruning(sequence, start_position):
 	"""
-	Based on a breadth first search.
-
-	Prunes 
+	Performs an exhaustive depth first search on a amino acid sequence, starting in start_position
 	"""
 	stack = []
 	finished = []
@@ -109,16 +108,23 @@ def wave_search(sequence, start_position):
 			protein = Protein_child(parent)
 			amino = Amino_acid(parent.length, sequence[parent.length], empty_spots[j])
 			protein.add_amino(amino)
-			
+
+			protein.find_neighbours()
+			protein.calculate_stability()
 			# put new proteins on stack or in finished queue
-			if protein.length < len(sequence):
+			if protein.length < 6:
 				stack.append(protein)
+			elif protein.length < len(sequence):
+				if protein.stability > 1:
+					print " NOT PRUNED"
+					print "stab", protein.stability
+					print "len", protein.length
+					stack.append(protein)
+				else:
+					print "PRUNED "
+					print "stab", protein.stability
+					print "len", protein.length
 			else:
-				protein.find_neighbours()
-				protein.calculate_stability()
-				print "protein stab", protein.stability
-				counter += 1
-				print "protein number: ", counter
 				# TO DO optimize: keep track of best one so far
 				if protein.stability > best:
 					heappush(finished,((protein.stability * -1),protein))
