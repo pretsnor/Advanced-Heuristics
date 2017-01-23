@@ -66,7 +66,7 @@ class Protein(object):
 			self.other_bonds[i].determine_value()
 			self.stability = self.stability + self.other_bonds[i].value
 
-		print "stability of this fold: ", self.stability
+		#print "stability of this fold: ", self.stability
 
 	def find_empty(self, location):
 		"""

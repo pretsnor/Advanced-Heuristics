@@ -74,6 +74,60 @@ def df(sequence, start_position):
 				# TO DO optimize: keep track of best one so far
 				if protein.stability > best:
 					heappush(finished,((protein.stability * -1),protein))
+					best = protein.stability
+	
+	# get best fold from prio queue
+	best = heappop(finished)[1]
+	best.visualize()	
+
+def df_pruning(sequence, start_position):
+	"""
+	Performs an exhaustive depth first search on a amino acid sequence, starting in start_position
+	"""
+	stack = []
+	finished = []
+	counter = 0	
+	parent_counter = 0
+	best = 0
+
+	# start by generating 1 amino acid protein on the stack
+	protein = Protein(sequence[0], start_position)
+	stack.append(protein)
+
+	while len(stack) > 0:
+		# pop parent from stack
+		parent = stack.pop()
+		parent_counter += 1
+
+		# find empty spots next to last amino acid
+		empty_spots = protein.find_empty(parent.seq[parent.length - 1].location)
+		
+		# generate childs with new amino acid on every possible spot
+		for j in range(len(empty_spots)):
+			protein = Protein_child(parent)
+			amino = Amino_acid(parent.length, sequence[parent.length], empty_spots[j])
+			protein.add_amino(amino)
+			
+			protein.find_neighbours()
+			protein.calculate_stability()
+			# put new proteins on stack or in finished queue
+			if protein.length < 6:
+				stack.append(protein)
+			elif protein.length < len(sequence):
+				if protein.stability > 1:
+					print " NOT PRUNED"
+					print "stab", protein.stability
+					print "len", protein.length
+					stack.append(protein)
+				else:
+					print "PRUNED "
+					print "stab", protein.stability
+					print "len", protein.length
+			else:
+				# TO DO optimize: keep track of best one so far
+				if protein.stability > best:
+					heappush(finished,((protein.stability * -1),protein))
+					best = protein.stability
 	
 	# get best fold from prio queue
 	best = heappop(finished)[1]
