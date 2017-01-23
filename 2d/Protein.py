@@ -104,6 +104,8 @@ class Protein(object):
 		# move amino acid q to an empty spot: ALSO UPDATE EVERYTHING?? --> MAKE A NEW PROTEIN! With new location list based on the pull move.
 		# self.seq[q].location = empty_spots[0]
 
+	def output(self):
+		print "LOCATIONS: ", self.locations
 		
 
 	def __iter__(self):
@@ -135,8 +137,8 @@ class Protein(object):
 		ax = fig.add_subplot(111)
 
 		# set limits
-		ax.set_xlim(0,10)
-		ax.set_ylim(0,10)
+		ax.set_xlim(0,30)
+		ax.set_ylim(0,30)
 		#ax.set_zlim(0,10)
 
 		# axis labels

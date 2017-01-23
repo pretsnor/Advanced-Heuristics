@@ -80,7 +80,6 @@ def df(sequence, start_position):
 	best = heappop(finished)[1]
 	best.visualize()	
 
-<<<<<<< HEAD
 def df_pruning(sequence, start_position):
 	"""
 	Performs an exhaustive depth first search on a amino acid sequence, starting in start_position
@@ -132,6 +131,69 @@ def df_pruning(sequence, start_position):
 	
 	# get best fold from prio queue
 	best = heappop(finished)[1]
+	best.visualize()	
+
+def beam_search(sequence, start_position, k, n):
+	"""
+	Based on a breadth first algorithm. Every k steps, we take the best n proteins (resulting in a wave shape pruning).
+	"""
+	prioqueue = []
+
+
+	finished = []
+	counter = 0	
+	parent_counter = 0
+	best = 0
+
+	# start by generating 1 amino acid protein on the stack
+	protein = Protein(sequence[0], start_position)
+	heappush(prioqueue,(0, protein))
+
+	while len(prioqueue) > 0:
+
+		# check for beam
+		if (len(prioqueue) > k * n):
+			print parent.length
+			print "BEFORE: ", len(prioqueue)
+			prioqueue = nsmallest(n,prioqueue)
+			print "AFTER: ", len(prioqueue)
+
+		# pop parent from prioqueue
+		parent = heappop(prioqueue)[1]
+
+		
+		print "prioqueue length: ", len(prioqueue)
+		print "parent length: ", parent.length
+		print "parent stab: ", parent.stability
+		
+		# find empty spots next to last amino acid
+		empty_spots = parent.find_empty(parent.seq[parent.length - 1].location)
+		
+		# generate childs with new amino acid on every possible spot
+		for j in range(len(empty_spots)):
+
+			protein = Protein_child(parent)
+			amino = Amino_acid(parent.length, sequence[parent.length], empty_spots[j])
+			protein.add_amino(amino)
+
+			protein.find_neighbours()
+			protein.calculate_stability()
+			# put new proteins on stack or in finished queue
+		
+			if protein.length < len(sequence):
+				heappush(prioqueue,((protein.stability * -1), protein))
+			else:
+				# TO DO optimize: keep track of best one so far
+				if protein.stability >= best:
+					counter += 1
+					print "finished protein: ", counter
+					heappush(finished,((protein.stability * -1),protein))
+					best = protein.stability
+	
+	# get best fold from prio queue
+	best = heappop(finished)[1]
+
+	best.output()
 	best.visualize()	
 
 
