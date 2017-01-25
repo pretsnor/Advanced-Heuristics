@@ -16,7 +16,7 @@ class Bond(object):
 		Determines the value of a bond 
 		"""
 
-		amino_matrix = {'HH': 1, 'HP': 0, 'PP': 0, 'PH': 0}
+		amino_matrix = {'HH': -1, 'HP': 0, 'PP': 0, 'PH': 0}
 		self.value = amino_matrix[self.type]
 
 

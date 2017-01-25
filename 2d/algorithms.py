@@ -2,6 +2,9 @@ import random
 from Protein import *
 from child_protein import *
 from heapq import *
+from time import sleep
+from Queue import *
+
 
 def initialize():
 	"""
@@ -72,8 +75,8 @@ def df(sequence, start_position):
 				counter += 1
 				print "protein number: ", counter
 				# TO DO optimize: keep track of best one so far
-				if protein.stability > best:
-					heappush(finished,((protein.stability * -1),protein))
+				if protein.stability < best:
+					heappush(finished,(protein.stability,protein))
 					best = protein.stability
 	
 	# get best fold from prio queue
@@ -160,11 +163,6 @@ def beam_search(sequence, start_position, k, n):
 
 		# pop parent from prioqueue
 		parent = heappop(prioqueue)[1]
-
-		
-		print "prioqueue length: ", len(prioqueue)
-		print "parent length: ", parent.length
-		print "parent stab: ", parent.stability
 		
 		# find empty spots next to last amino acid
 		empty_spots = parent.find_empty(parent.seq[parent.length - 1].location)
@@ -181,13 +179,13 @@ def beam_search(sequence, start_position, k, n):
 			# put new proteins on stack or in finished queue
 		
 			if protein.length < len(sequence):
-				heappush(prioqueue,((protein.stability * -1), protein))
+				heappush(prioqueue,(protein.stability, protein))
 			else:
 				# TO DO optimize: keep track of best one so far
-				if protein.stability >= best:
+				if protein.stability <= best:
 					counter += 1
 					print "finished protein: ", counter
-					heappush(finished,((protein.stability * -1),protein))
+					heappush(finished,(protein.stability,protein))
 					best = protein.stability
 	
 	# get best fold from prio queue
@@ -195,6 +193,64 @@ def beam_search(sequence, start_position, k, n):
 
 	best.output()
 	best.visualize()	
+
+
+def beam_search2(sequence, start_position, w):
+	"""
+	Based on a breadth first algorithm. Take w children every generation.
+
+	this one is correcto
+
+	todo: prune somehow
+	"""
+
+	total_queue = Queue()
+	total_counter = 0
+
+	temp_queue = []
+	temp_counter = 0
+	best = 0
+
+	finished = []
+	finished_counter = 0
+
+	# make first anchestor protein
+	ancestor = Protein(sequence[0], start_position)
+	total_queue.put(ancestor)
+
+	while (total_queue.qsize() > 0):		
+		parent = total_queue.get()
+
+		# check if finished
+		if parent.length == len(sequence):
+			if parent.stability <= best:
+				heappush(finished,(parent.stability, finished_counter, parent))
+				finished_counter += 1
+				best = parent.stability
+		else:
+
+			# find empty spots next to last amino acid
+			empty_spots = parent.find_empty(parent.seq[parent.length - 1].location)
+
+			# make child with next amino acid on all empty spots
+			for i in range(len(empty_spots)):
+				child = Protein_child(parent)
+				amino = Amino_acid(parent.length, sequence[parent.length], empty_spots[i])
+				child.add_amino(amino)
+				child.find_neighbours()
+				child.calculate_stability()
+
+				if (child.length == 10 and child.stability > -3):
+					break
+				else:
+					print child.stability
+					print child.length
+					total_queue.put(child)
+					temp_counter += 1
+
+	best = heappop(finished)[2]
+	best.visualize()
+		
 
 
 
