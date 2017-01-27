@@ -20,11 +20,13 @@ sequence36 = ["P","P","P","H","H","P","P","H","H","P","P","P","P","P","H","H","H
 ## SETTINGS TO REMEMBER
 
 # complete doorrekening van seq14 = stability 6
-# df(sequence14,[(15,15)])
+#df(sequence14,[(15,15)])
 
 # beam search solves seq 20 to max score of 9 (see paper Liu, Li, Yu)    BUT NOT ALWAYS?
-# beam_search(sequence36, [(15,15)], 10, 1000)
-beam_search2(sequence14, [(15,15)], 2000)
+#beam_search(sequence14, [(15,15)], 10, 1000)
+#beam_search2(sequence36, [(15,15)], 2000)
 # wave_search(sequence36, [(15,15)], 10, 400)
+
+self_avoiding_walk(sequence14, 10)
 
 

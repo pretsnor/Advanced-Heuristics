@@ -4,38 +4,121 @@ from child_protein import *
 from heapq import *
 from time import sleep
 from Queue import *
+import csv
 
 
-def initialize():
+def self_avoiding_walk(sequence, x):
 	"""
 	Generates a pseudorandom self avoiding walk of the input sequence
 	"""
-
-	sequence = ["H", "P", "H", "H", "P","H", "P", "H", "H", "P", "H","H"]
 	locations = [(5,5)]
+	self_cross_counter = 0
+	# open csv
+	random_walk = open("self_avoiding.csv", "wr+")
 
-	for i in range(len(sequence)):
-		while True:
-			n = random.randint(0, 4)
-			if n == 1:
-				next = (locations[i][0],locations[i][1] - 1)
-			elif n == 2:
-				next = (locations[i][0],locations[i][1] + 1)
-			elif n == 3:
-				next = (locations[i][0] - 1,locations[i][1])
-			else:
-				next = (locations[i][0] + 1,locations[i][1])
+	for j in range(0, x):
+		test_list = []
+		for i in range(len(sequence)):
+			while True:
+				n = random.randint(0, 4)
+				if n == 1:
+					next = (locations[i][0],locations[i][1] - 1)
+				elif n == 2:
+					next = (locations[i][0],locations[i][1] + 1)
+				elif n == 3:
+					next = (locations[i][0] - 1,locations[i][1])
+				else:
+					next = (locations[i][0] + 1,locations[i][1])
+				
+				# avoid self intersections
+				if next not in locations:
+					break
+				else:
+					self_cross_counter += 1
+
+			locations.append(next)
+			print self_cross_counter
+			self_cross_counter = 0
+
+
 			
-			# avoids self intersections
-			if next not in locations:
-				break
 
-		locations.append(next)
+		# generate and visualize	
+		protein = Protein(sequence,locations)
+		protein.find_neighbours()
+		protein.calculate_stability()
+		
+		test_list.append(protein.stability)
+		print protein.length
+		print self_cross_counter
+		print protein.stability
+		protein.visualize()
+		if protein.length < len(sequence):
+			test_list.append(self_cross_counter)
 
-	# generate and visualize	
-	protein = Protein(sequence,locations)
-	
-	return protein
+
+		# write to csv
+		writer = csv.writer(random_walk)
+		writer.writerow(test_list)
+
+		# reset locations
+		locations = [(5,5)]
+
+
+
+# def random_walk(sequence, x):
+# 	"""
+# 	Generates a pseudorandom  of the input sequence
+# 	"""
+# 	locations = [(5,5)]
+# 	self_cross_counter = 0
+# 	# open csv
+# 	random_walk = open("self_avoiding.csv", "wr+")
+
+# 	for j in range(0, x):
+# 		test_list = []
+# 		for i in range(len(sequence)):
+# 			while True:
+# 				n = random.randint(0, 4)
+# 				if n == 1:
+# 					next = (locations[i][0],locations[i][1] - 1)
+# 				elif n == 2:
+# 					next = (locations[i][0],locations[i][1] + 1)
+# 				elif n == 3:
+# 					next = (locations[i][0] - 1,locations[i][1])
+# 				else:
+# 					next = (locations[i][0] + 1,locations[i][1])
+				
+# 				# has to do self intersections
+# 				if next not in locations:
+# 					break
+# 				else:	
+# 					self_cross_counter += 1
+# 					break
+
+# 			locations.append(next)
+
+# 		# generate and visualize	
+# 		protein = Protein(sequence,locations)
+# 		protein.find_neighbours()
+# 		protein.calculate_stability()
+# 		protein.visualize()
+		
+# 		test_list.append(protein.stability)
+# 		if protein.length < len(sequence):
+# 			test_list.append(1)
+
+
+# 		# write to csv
+# 		writer = csv.writer(random_walk)
+# 		writer.writerow(test_list)
+
+# 		# reset locations
+# 		locations = [(5,5)]
+# 		self_cross_counter = 0
+
+
+
 
 def df(sequence, start_position):
 	"""
@@ -240,11 +323,21 @@ def beam_search2(sequence, start_position, w):
 				child.find_neighbours()
 				child.calculate_stability()
 
-				if (child.length == 10 and child.stability > -3):
+				if (child.length == 10 and child.stability > -2):
+					break
+				elif (child.length == 15 and child.stability > -3):
+					break
+				elif (child.length == 20 and child.stability > -6):
+					break
+				elif (child.length == 25 and child.stability > -8):
+					break
+				elif (child.length == 30 and child.stability > -9):
 					break
 				else:
-					print child.stability
-					print child.length
+					if temp_counter == 10000:
+						print child.stability
+						print child.length
+						temp_counter = 0
 					total_queue.put(child)
 					temp_counter += 1
 
