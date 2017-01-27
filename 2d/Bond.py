@@ -4,7 +4,7 @@ class Bond(object):
 	"""
 
 	def __init__(self, aa1, aa2):
-		self.bond = (aa1.location,aa2.location)
+		self.bond = (aa1.location, aa2.location)
 
 		self.value = 0
 		self.type = aa1.acid + aa2.acid

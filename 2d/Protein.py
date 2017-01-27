@@ -5,6 +5,7 @@ from pprint import pprint
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 from math import *
+from random import *
 
 class Protein(object):
 	"""
@@ -40,11 +41,18 @@ class Protein(object):
 		for i in range(self.length - 1):
 			self.covalent_bonds.append(Bond(self.seq[i], self.seq[i + 1]))
 
+	def update_bonds(self):
+		# generate list (of tuples (of tuples)) containing all covalent bonds
+		self.covalent_bonds = []
+
+		for i in range(self.length - 1):
+			self.covalent_bonds.append(Bond(self.seq[i], self.seq[i + 1]))
 
 	def find_neighbours(self): 
 		"""
 		Finds neighbouring amino acid couples in the protein.
 		"""	
+		self.total_bonds = []
 
 		# find all possible bonds
 		for i in range(self.length):
@@ -63,11 +71,13 @@ class Protein(object):
 		"""
 		Calculates the stability of the protein in the current folding, based on neighbour interactions of amino acids
 		"""
+		self.stability = 0
+
 		for i in range(len(self.other_bonds)):
 			self.other_bonds[i].determine_value()
 			self.stability = self.stability + self.other_bonds[i].value
 
-		#print "stability of this fold: ", self.stability
+		# print "stability of this fold: ", self.stability
 
 	def find_empty(self, location):
 		"""
@@ -82,8 +92,6 @@ class Protein(object):
 		empty_spots = [x for x in options if x not in self.locations]
 
 		return empty_spots
-
-
 
 	def rotate(self, n, angle):
 	    """
@@ -111,16 +119,34 @@ class Protein(object):
 	    	self.x[i] = qx
 	    	self.y[i] = qy
 
+	    self.update_bonds()
+
 	def validity_check(self):
+		"""
+		Checks if a protein folding is valid (= does not overlap anywhere)
+		"""
 		if self.length != len(set(self.locations)):
 			return False
 		else:
 			return True	
 
+	def random_move(self):
+		"""
+		Performs a random valid rotation move.
+		"""
+		options = [90, 180, 270]
+		ang = randint(0,2)
+		n = randint(2, self.length - 1)
+		self.rotate(n, radians(options[ang]))
+
 
 	def output(self):
 		print "LOCATIONS: ", self.locations
-		
+		print "length total bonds: ",  len(self.total_bonds)
+		print "length covalent bonds: ",  len(self.covalent_bonds)
+		print "length other bonds: ",  len(self.other_bonds)
+		for i in range(0, len(self.other_bonds)):
+			print self.other_bonds[i].bond
 
 	def __iter__(self):
 		"""

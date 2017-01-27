@@ -23,7 +23,7 @@ sequence36 = ["P","P","P","H","H","P","P","H","H","P","P","P","P","P","H","H","H
 ## SETTINGS TO REMEMBER
 
 # complete doorrekening van seq14 = stability 6
-# df(sequence14,[(15,15)])
+# df(sequence8,[(15,15)])
 
 # beam search solves seq 20 to max score of 9 (see paper Liu, Li, Yu)    BUT NOT ALWAYS?
 # beam_search(sequence36, [(15,15)], 10, 1000)
@@ -33,18 +33,54 @@ sequence36 = ["P","P","P","H","H","P","P","H","H","P","P","P","P","P","H","H","H
 
 
 ############################ MOVE CHECKER
-protein = Protein(["H", "H", "P", "H", "H", "H", "P", "P", "H", "P"], [(5,5),(5,6),(5,7),(5,8),(5,9),(5,10),(5,11),(5,12),(5,13),(5,14)])
-protein.visualize()
+# protein = Protein(["H", "H", "H", "H", "H", "H", "H"],[(5,5),(5,6),(4,6),(4,5),(3,5),(2,5),(2,4)])
+# protein.find_neighbours()
+# protein.calculate_stability()
+# protein.visualize()
 
-options = [90, 180, 270]
+# child = protein
+# while True:
+# 	options = [90, 180, 270]
+# 	n = randint(2, 6)
+# 	ang = randint(0,2)
+# 	child.rotate(n, radians(options[ang]))
+# 	child.find_neighbours()
+# 	print child.validity_check()
+	
+# 	child.calculate_stability()
 
-for i in range(0, 5):
-	n = random.randint(2, 9)	
-	ang = random.randint(0,2)
-	protein.rotate(n,radians(options[ang]))
-	# check validity enzo!
-protein.visualize()
-protein.output()
+# 	if child.validity_check() == True:
+# 		break
+
+# child.visualize()
+
+# options = [90, 180, 270]
+
+# n = randint(2, 9)	
+# ang = randint(0,2)
+# protein.rotate(n,radians(options[ang]))
+
+# protein.find_neighbours()
+# protein.calculate_stability()
+
+# print protein.validity_check()
+# protein.visualize()
+# protein.output()
+
+
+######## HILLCLIMB
+
+# protein = Protein(sequence14,[(5,5),(5,6),(5,7),(5,8),(5,9),(5,10),(5,11),(5,12),(5,13),(5,14),(5,15),(5,16),(5,17),(5,18)])
+protein = Protein(sequence36,[(5,5),(5,6),(5,7),(5,8),(5,9),(5,10),(5,11),(5,12),(5,13),(5,14),(5,15),(5,16),(5,17),(5,18),(5,19),(5,20),(5,21),(5,22),(5,23),(5,24),(5,25),(5,26),(5,27),(5,28),(5,29),(5,30),(5,31),(5,32),(5,33),(5,34),(5,35),(5,36),(5,37),(5,38),(5,39),(5,40)])
+# protein = initialize(sequence14)
+protein.find_neighbours()
+protein.calculate_stability()
+
+hillclimbed = hillclimb(protein, 2000)
+hillclimbed.find_neighbours()
+hillclimbed.calculate_stability()
+# hillclimbed.output()
+hillclimbed.visualize()
 
 
 

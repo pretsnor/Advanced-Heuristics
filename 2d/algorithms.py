@@ -1,9 +1,11 @@
-import random
+from random import *
 from Protein import *
 from child_protein import *
 from heapq import *
 from time import sleep
 from Queue import *
+from copy import deepcopy
+
 
 
 def initialize(sequence):
@@ -14,7 +16,7 @@ def initialize(sequence):
 
 	for i in range(len(sequence)):
 		while True:
-			n = random.randint(0, 4)
+			n = randint(0, 4)
 			if n == 1:
 				next = (locations[i][0],locations[i][1] - 1)
 			elif n == 2:
@@ -192,6 +194,48 @@ def beam_search2(sequence, start_position, w):
 
 	best = heappop(finished)[2]
 	best.visualize()
+
+def hillclimb(protein, iterations):
+	"""
+	Simple hill climbing algorithm
+
+	Moves by pivotting around an amino acid.
+
+	Accepts moves if new configuration is as stable or more stable than its parent
+	""" 
+	print "HILLCLIMBING HAS STARTED!"
+	best = protein
+	best.find_neighbours()
+	best.calculate_stability()
+
+	options = [90, 180, 270]
+	
+	
+
+	for i in range(0, iterations):
+
+		print "ITERATION: ", i, "BEST STAB: ", best.stability
+		option = copy.deepcopy(best)
+
+		while True: 
+			n = randint(2, option.length - 1)
+			ang = randint(0,2)
+			option.rotate(n, radians(options[ang]))
+			option.find_neighbours()
+		
+			# check if valid
+			if option.validity_check() == True: break
+		
+		option.calculate_stability()
+		if option.stability <= best.stability:
+			best = option
+
+	return best
+
+
+
+
+
 		
 
 
