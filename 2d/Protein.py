@@ -4,6 +4,7 @@ from Bond import *
 from pprint import pprint
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
+from math import *
 
 class Protein(object):
 	"""
@@ -82,27 +83,40 @@ class Protein(object):
 
 		return empty_spots
 
-	def pull_move(self, q):
-		"""
-		Performs a pull move on amino acid q
-		"""
-		pull_acid = self.seq[q]
-		pull_location = pull_acid.location
 
-		print "we want to pull from here: ",  pull_location
 
-		# finds empty spot around q + 1 
-		empty_spots = self.find_empty(self.seq[q + 1].location)
+	def rotate(self, n, angle):
+	    """
+	    Rotate all amino acids after amino acid n counterclockwise by a given angle around amino acid n.
 
-		# check if there are empty spots
-		if len(empty_spots) == 0:
-			print "oeps geen empty spots"
-			return 0
+	    The angle should be given in radians.
 
-		print empty_spots
+	    TODO: ZORGEN DAT IE DE KORTSTE TAK PAKT OM TE WISSELEN?
+	    """
 
-		# move amino acid q to an empty spot: ALSO UPDATE EVERYTHING?? --> MAKE A NEW PROTEIN! With new location list based on the pull move.
-		# self.seq[q].location = empty_spots[0]
+	    origin = self.seq[n].location
+	    rest_length = (self.length - n)
+
+	    ox, oy = origin
+	    new_locs = []
+
+	    # find all locations after
+	    for i in range(n + 1, n + rest_length):
+	    	px, py = self.seq[i].location
+	    	qx = int(round(ox + cos(angle) * (px - ox) - sin(angle) * (py - oy)))
+	    	qy = int(round(oy + sin(angle) * (px - ox) + cos(angle) * (py - oy)))
+	    	# update all location sheit
+	    	self.seq[i].location = (qx, qy)
+	    	self.locations[i] = (qx, qy)
+	    	self.x[i] = qx
+	    	self.y[i] = qy
+
+	def validity_check(self):
+		if self.length != len(set(self.locations)):
+			return False
+		else:
+			return True	
+
 
 	def output(self):
 		print "LOCATIONS: ", self.locations
