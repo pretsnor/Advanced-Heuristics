@@ -177,8 +177,8 @@ class Protein(object):
 		ax = fig.add_subplot(111)
 
 		# set limits
-		ax.set_xlim(0,30)
-		ax.set_ylim(0,30)
+		ax.set_xlim(0,100)
+		ax.set_ylim(0,100)
 		#ax.set_zlim(0,10)
 
 		# axis labels
