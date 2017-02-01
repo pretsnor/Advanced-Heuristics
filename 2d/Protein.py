@@ -191,8 +191,8 @@ class Protein(object):
 		ax = fig.add_subplot(111)
 
 		# set limits
-		ax.set_xlim(0,100)
-		ax.set_ylim(0,100)
+		ax.set_xlim(min(x) - 3, max(x) + 3)
+		ax.set_ylim(min(y) - 3, max(y) + 3)
 		#ax.set_zlim(0,10)
 
 		# axis labels
@@ -218,7 +218,7 @@ class Protein(object):
 		fig.suptitle('protein stability = %s'%(self.stability) , fontsize=14, fontweight='bold')
 
 
-		plt.show()
+		return plt
  	
 		
 	

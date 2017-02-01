@@ -5,6 +5,7 @@ from algorithms import *
 from child_protein import *
 from time import sleep
 from math import *
+import csv
 
 
 
@@ -24,7 +25,7 @@ sequence36 = ["P","P","P","H","H","P","P","H","H","P","P","P","P","P","H","H","H
 
 # complete doorrekening van seq14 = stability 6
 
-df(sequence8,[(15,15)])
+# df(sequence8,[(15,15)])
 #df(sequence14,[(15,15)])
 # df(sequence8,[(15,15)])
 
@@ -80,7 +81,6 @@ df(sequence8,[(15,15)])
 
 ######## HILLCLIMB
 
-<<<<<<< HEAD
 # # protein = Protein(sequence14,[(5,5),(5,6),(5,7),(5,8),(5,9),(5,10),(5,11),(5,12),(5,13),(5,14),(5,15),(5,16),(5,17),(5,18)])
 # protein = Protein(sequence36,[(5,5),(5,6),(5,7),(5,8),(5,9),(5,10),(5,11),(5,12),(5,13),(5,14),(5,15),(5,16),(5,17),(5,18),(5,19),(5,20),(5,21),(5,22),(5,23),(5,24),(5,25),(5,26),(5,27),(5,28),(5,29),(5,30),(5,31),(5,32),(5,33),(5,34),(5,35),(5,36),(5,37),(5,38),(5,39),(5,40)])
 # # protein = initialize(sequence14)
@@ -88,18 +88,45 @@ df(sequence8,[(15,15)])
 # protein.calculate_stability()
 
 # hillclimbed = hillclimb(protein, 2000)
-=======
+
 # protein = Protein(sequence14,[(5,5),(5,6),(5,7),(5,8),(5,9),(5,10),(5,11),(5,12),(5,13),(5,14),(5,15),(5,16),(5,17),(5,18)])
 # protein = Protein(sequence20,[(5,5),(5,6),(5,7),(5,8),(5,9),(5,10),(5,11),(5,12),(5,13),(5,14),(5,15),(5,16),(5,17),(5,18),(5,19),(5,20),(5,21),(5,22),(5,23),(5,24)])
 # protein = Protein(sequence36,[(5,5),(5,6),(5,7),(5,8),(5,9),(5,10),(5,11),(5,12),(5,13),(5,14),(5,15),(5,16),(5,17),(5,18),(5,19),(5,20),(5,21),(5,22),(5,23),(5,24),(5,25),(5,26),(5,27),(5,28),(5,29),(5,30),(5,31),(5,32),(5,33),(5,34),(5,35),(5,36),(5,37),(5,38),(5,39),(5,40)])
 # # protein = initialize(sequence14)
 
 # hillclimbed = simulated_annealing(protein, 15000)
->>>>>>> 0bc9d32aab757354d357a676a7027b26948f2661
+
 # hillclimbed.find_neighbours()
 # hillclimbed.calculate_stability()
 # # hillclimbed.output()
 # hillclimbed.visualize()
+def data(amount):
+	scores = []
+	unique_list = []
+	location_list = []
+
+	for i in range(0,amount):
+		protein = Protein(sequence36,[(5,5),(5,6),(5,7),(5,8),(5,9),(5,10),(5,11),(5,12),(5,13),(5,14),(5,15),(5,16),(5,17),(5,18),(5,19),(5,20),(5,21),(5,22),(5,23),(5,24),(5,25),(5,26),(5,27),(5,28),(5,29),(5,30),(5,31),(5,32),(5,33),(5,34),(5,35),(5,36),(5,37),(5,38),(5,39),(5,40)])
+		hillclimbed = hillclimb(protein, 1000)
+		scores.append(hillclimbed.stability)
+
+		plot = hillclimbed.visualize()
+		plot.savefig('hillclimb_seq36_' + str(i))
+		
+		if hillclimbed.locations not in location_list:
+			location_list.append(hillclimbed.locations)
+			unique_list.append(1)
+		else:
+			unique_list.append(0)
+
+	# open csv
+	hillclimbfile = open("hillclimb.csv", "w")
+	# write to csv
+	writer = csv.writer(hillclimbfile)
+	writer.writerow(scores)
+	writer.writerow(unique_list)
+
+data()
 
 
 
