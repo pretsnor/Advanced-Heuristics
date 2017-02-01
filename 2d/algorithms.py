@@ -323,6 +323,8 @@ def simulated_annealing(protein, iterations):
 	best = protein
 	best.find_neighbours()
 	best.calculate_stability()
+	real_best = protein
+
 
 	options = [90, 180, 270]
 	
@@ -333,7 +335,7 @@ def simulated_annealing(protein, iterations):
 
 		t = temperature(100, i)
 
-		print i, best.stability, t
+		print i, best.stability, real_best.stability
 
 		while True: 
 			# do random move
@@ -354,10 +356,13 @@ def simulated_annealing(protein, iterations):
 		option.calculate_stability()
 		if option.stability <= best.stability:
 			best = option
+			if option.stability < real_best.stability:
+				real_best = option
+
 		elif (random() < e**-((option.stability - best.stability)/t)):
 			best = option
 
-	return best
+	return real_best
 
 
 
