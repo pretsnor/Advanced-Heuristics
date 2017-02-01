@@ -5,6 +5,7 @@ from heapq import *
 from time import sleep
 from Queue import *
 from copy import deepcopy
+from math import log, e
 import csv
 
 
@@ -256,6 +257,8 @@ def beam_search2(sequence, start_position, w):
 				elif (child.length == 15 and child.stability > -5):
 					break
 				elif (child.length == 18 and child.stability > -6):
+					 break
+				elif (child.length == 30 and child.stability > -9):
 					break
 				else:
 					if temp_counter == 10000:
@@ -283,27 +286,79 @@ def hillclimb(protein, iterations):
 
 	options = [90, 180, 270]
 	
-	
-
 	for i in range(0, iterations):
-
-		print "ITERATION: ", i, "BEST STAB: ", best.stability
+		
 		option = copy.deepcopy(best)
+		count = 0
 
 		while True: 
 			n = randint(2, option.length - 1)
 			ang = randint(0,2)
 			option.rotate(n, radians(options[ang]))
 			option.find_neighbours()
-		
-			# check if valid
-			if option.validity_check() == True: break
+			count += 1
+			if option.validity_check() == True: 		
+				break
+			if count == 50:
+				option = copy.deepcopy(best)
+				break
+
 		
 		option.calculate_stability()
 		if option.stability <= best.stability:
 			best = option
 
 	return best
+	
+def temperature(tmax, t):
+	return (tmax/(log(2 + t))/30)
+
+def simulated_annealing(protein, iterations):
+	"""
+	Moves by pivotting around an amino acid.
+
+	Accepts moves if new configuration is as stable or more stable than its parent
+	""" 
+	print "SA HAS STARTED!"
+	best = protein
+	best.find_neighbours()
+	best.calculate_stability()
+
+	options = [90, 180, 270]
+	
+	for i in range(0, iterations):
+		
+		option = copy.deepcopy(best)
+		count = 0
+
+		t = temperature(100, i)
+
+		print i, best.stability, t
+
+		while True: 
+			# do random move
+			n = randint(2, option.length - 1)
+			ang = randint(0,2)
+			option.rotate(n, radians(options[ang]))
+			option.find_neighbours()
+			count += 1
+
+			# if valid, go on
+			if option.validity_check() == True: 		
+				break
+			# if it takes to long to find a valid, try again
+			if count == 50:
+				option = copy.deepcopy(best)
+				break
+		
+		option.calculate_stability()
+		if option.stability <= best.stability:
+			best = option
+		elif (random() < e**-((option.stability - best.stability)/t)):
+			best = option
+
+	return best
+
 
 
 

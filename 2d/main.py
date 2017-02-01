@@ -23,8 +23,11 @@ sequence36 = ["P","P","P","H","H","P","P","H","H","P","P","P","P","P","H","H","H
 ## SETTINGS TO REMEMBER
 
 # complete doorrekening van seq14 = stability 6
+
 df(sequence8,[(15,15)])
 #df(sequence14,[(15,15)])
+# df(sequence8,[(15,15)])
+
 
 # beam search solves seq 20 to max score of 9 (see paper Liu, Li, Yu)    BUT NOT ALWAYS?
 #beam_search(sequence14, [(15,15)], 10, 1000)
@@ -33,7 +36,9 @@ df(sequence8,[(15,15)])
 #beam_search2(sequence20, [(15,15)], 2000)
 # wave_search(sequence36, [(15,15)], 10, 400)
 
+
 #self_avoiding_walk(sequence36, 10000)
+# self_avoiding_walk(sequence14, 10)
 
 
 
@@ -75,6 +80,7 @@ df(sequence8,[(15,15)])
 
 ######## HILLCLIMB
 
+<<<<<<< HEAD
 # # protein = Protein(sequence14,[(5,5),(5,6),(5,7),(5,8),(5,9),(5,10),(5,11),(5,12),(5,13),(5,14),(5,15),(5,16),(5,17),(5,18)])
 # protein = Protein(sequence36,[(5,5),(5,6),(5,7),(5,8),(5,9),(5,10),(5,11),(5,12),(5,13),(5,14),(5,15),(5,16),(5,17),(5,18),(5,19),(5,20),(5,21),(5,22),(5,23),(5,24),(5,25),(5,26),(5,27),(5,28),(5,29),(5,30),(5,31),(5,32),(5,33),(5,34),(5,35),(5,36),(5,37),(5,38),(5,39),(5,40)])
 # # protein = initialize(sequence14)
@@ -82,6 +88,14 @@ df(sequence8,[(15,15)])
 # protein.calculate_stability()
 
 # hillclimbed = hillclimb(protein, 2000)
+=======
+# protein = Protein(sequence14,[(5,5),(5,6),(5,7),(5,8),(5,9),(5,10),(5,11),(5,12),(5,13),(5,14),(5,15),(5,16),(5,17),(5,18)])
+# protein = Protein(sequence20,[(5,5),(5,6),(5,7),(5,8),(5,9),(5,10),(5,11),(5,12),(5,13),(5,14),(5,15),(5,16),(5,17),(5,18),(5,19),(5,20),(5,21),(5,22),(5,23),(5,24)])
+# protein = Protein(sequence36,[(5,5),(5,6),(5,7),(5,8),(5,9),(5,10),(5,11),(5,12),(5,13),(5,14),(5,15),(5,16),(5,17),(5,18),(5,19),(5,20),(5,21),(5,22),(5,23),(5,24),(5,25),(5,26),(5,27),(5,28),(5,29),(5,30),(5,31),(5,32),(5,33),(5,34),(5,35),(5,36),(5,37),(5,38),(5,39),(5,40)])
+# # protein = initialize(sequence14)
+
+# hillclimbed = simulated_annealing(protein, 15000)
+>>>>>>> 0bc9d32aab757354d357a676a7027b26948f2661
 # hillclimbed.find_neighbours()
 # hillclimbed.calculate_stability()
 # # hillclimbed.output()
