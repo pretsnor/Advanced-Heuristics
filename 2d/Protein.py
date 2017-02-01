@@ -102,22 +102,36 @@ class Protein(object):
 	    TODO: ZORGEN DAT IE DE KORTSTE TAK PAKT OM TE WISSELEN?
 	    """
 
+
 	    origin = self.seq[n].location
-	    rest_length = (self.length - n)
+	    after_length = (self.length - n)
+	    before_length = n - 1
 
 	    ox, oy = origin
 	    new_locs = []
 
-	    # find all locations after
-	    for i in range(n + 1, n + rest_length):
-	    	px, py = self.seq[i].location
-	    	qx = int(round(ox + cos(angle) * (px - ox) - sin(angle) * (py - oy)))
-	    	qy = int(round(oy + sin(angle) * (px - ox) + cos(angle) * (py - oy)))
-	    	# update all location sheit
-	    	self.seq[i].location = (qx, qy)
-	    	self.locations[i] = (qx, qy)
-	    	self.x[i] = qx
-	    	self.y[i] = qy
+	    # find all locations after or before
+
+	    if (after_length < before_length):
+		    for i in range(n + 1, n + after_length):
+		    	px, py = self.seq[i].location
+		    	qx = int(round(ox + cos(angle) * (px - ox) - sin(angle) * (py - oy)))
+		    	qy = int(round(oy + sin(angle) * (px - ox) + cos(angle) * (py - oy)))
+		    	# update all location sheit
+		    	self.seq[i].location = (qx, qy)
+		    	self.locations[i] = (qx, qy)
+		    	self.x[i] = qx
+		    	self.y[i] = qy
+	    else:
+			for i in range(0, before_length + 1):
+				px, py = self.seq[i].location
+				qx = int(round(ox + cos(angle) * (px - ox) - sin(angle) * (py - oy)))
+				qy = int(round(oy + sin(angle) * (px - ox) + cos(angle) * (py - oy)))
+				# update all location sheit
+				self.seq[i].location = (qx, qy)
+				self.locations[i] = (qx, qy)
+				self.x[i] = qx
+				self.y[i] = qy
 
 	    self.update_bonds()
 
